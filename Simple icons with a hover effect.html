@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 2: Social Media Icons</title>
+    
+    <!-- 
+      This link imports the Font Awesome library.
+      It allows us to use icons just by adding a class to an element.
+      You can get this link from sites like cdnjs.com.
+    -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        /* --- Basic Page Reset and Centering --- */
+        body {
+            /* This ensures our content is perfectly centered on the page */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Make the body at least the full height of the viewport */
+            margin: 0;
+            background-color: #f0f2f5; /* A light, neutral background */
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* --- The Main Icon Container --- */
+        .social-icons-container {
+            display: flex;
+            gap: 20px; /* This creates space between each icon */
+        }
+
+        /* --- Styling for each individual icon link --- */
+        .icon {
+            /* Sizing and Shape */
+            width: 60px;
+            height: 60px;
+            border-radius: 50%; /* This makes the square a perfect circle */
+            
+            /* Center the icon (the <i> tag) inside the circle */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+            /* Text and Color */
+            text-decoration: none; /* Remove the default underline from links */
+            color: #333; /* Default icon color (dark grey) */
+            font-size: 24px; /* Size of the icon itself */
+            
+            /* Shadow and Background */
+            background-color: #ffffff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            
+            /* --- The Magic! Smooth transition for the hover effect --- */
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* --- THE HOVER EFFECT --- */
+        .icon:hover {
+            /* On hover, move the icon up slightly to make it feel like it's lifting */
+            transform: translateY(-5px); 
+            /* Make the shadow slightly larger and darker for more depth */
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* --- Brand-specific colors on hover --- */
+        /* When we hover over the icon with the class 'twitter', change its background and text color */
+        .twitter:hover {
+            background-color: #1DA1F2; /* Twitter Blue */
+            color: #fff;
+        }
+
+        .github:hover {
+            background-color: #333; /* GitHub Black */
+            color: #fff;
+        }
+
+        .linkedin:hover {
+            background-color: #0A66C2; /* LinkedIn Blue */
+            color: #fff;
+        }
+
+        .instagram:hover {
+            /* Instagram has a famous gradient background */
+            background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%);
+            color: #fff;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="social-icons-container">
+        <!-- 
+          Each icon is a link (<a>) with two classes:
+          1. 'icon': for the general circular styling.
+          2. a brand name (e.g., 'twitter'): for the specific hover color.
+          The <i> tag inside is provided by Font Awesome.
+          The href="#" is a placeholder for the actual link.
+        -->
+        <a href="#" class="icon twitter">
+            <i class="fa-brands fa-twitter"></i>
+        </a>
+        <a href="#" class="icon github">
+            <i class="fa-brands fa-github"></i>
+        </a>
+        <a href="#" class="icon linkedin">
+            <i class="fa-brands fa-linkedin-in"></i>
+        </a>
+        <a href="#" class="icon instagram">
+            <i class="fa-brands fa-instagram"></i>
+        </a>
+    </div>
+
+</body>
+</html>
