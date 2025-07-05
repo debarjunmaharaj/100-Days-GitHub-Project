@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Card</title>
+    <style>
+        /* Google Font Import */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+        /* Basic Reset and Body Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f0f2f5;
+            /* Center the card in the page */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Product Card Container */
+        .product-card {
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden; /* Ensures the image doesn't bleed out of the rounded corners */
+            max-width: 320px;
+            width: 100%;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px); /* Slight lift effect on hover */
+        }
+
+        /* Product Image */
+        .product-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Product Info Section */
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-category {
+            font-size: 12px;
+            color: #888;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .product-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .product-description {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        /* Price and Button Container */
+        .product-price-btn {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-price {
+            font-size: 28px;
+            font-weight: 700;
+            color: #007bff;
+        }
+
+        .add-to-cart-btn {
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 50px; /* Pill-shaped button */
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .add-to-cart-btn:hover {
+            background-color: #0056b3;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="product-card">
+        <div class="product-image">
+            <!-- Using a placeholder image from unsplash. You can replace this with your own. -->
+            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&auto=format&fit=crop&q=60" alt="Running Shoe">
+        </div>
+        <div class="product-info">
+            <p class="product-category">Running Shoes</p>
+            <h1 class="product-title">Nike Air Zoom</h1>
+            <p class="product-description">
+                Experience responsive cushioning for your daily runs. The Air Zoom unit provides a smooth, snappy feel.
+            </p>
+            <div class="product-price-btn">
+                <p class="product-price">$120</p>
+                <button class="add-to-cart-btn">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
