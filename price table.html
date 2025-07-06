@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Pricing Table</title>
+    <style>
+        /*-- Google Fonts --*/
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        /*-- Global Styles --*/
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f7f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        /*-- Pricing Container --*/
+        .pricing-container {
+            display: flex;
+            flex-wrap: wrap; /* Allows items to wrap to the next line on smaller screens */
+            justify-content: center;
+            gap: 2rem; /* Space between the cards */
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /*-- Individual Pricing Card --*/
+        .pricing-card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 2.5rem;
+            flex: 1; /* Each card will take up equal space */
+            min-width: 300px; /* Minimum width before wrapping */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .pricing-card .plan-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+
+        .pricing-card .plan-price {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .pricing-card .plan-price span {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #999;
+        }
+
+        /*-- Feature List --*/
+        .feature-list {
+            list-style: none;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .feature-list li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e9e9e9;
+            color: #666;
+        }
+        
+        .feature-list li::before {
+            content: '✔'; /* Checkmark symbol */
+            color: #28a745;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .feature-list li.disabled::before {
+            content: '✖'; /* Cross symbol */
+            color: #dc3545;
+        }
+        
+        .feature-list li.disabled {
+            color: #aaa;
+            text-decoration: line-through;
+        }
+
+        /*-- Call to Action Button --*/
+        .cta-button {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            padding: 0.75rem 2rem;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: #0056b3;
+        }
+
+        /*-- Highlighted "Pro" Plan --*/
+        .pricing-card.highlight {
+            background-color: #007bff;
+            color: #fff;
+            transform: scale(1.05); /* Make it slightly bigger */
+        }
+        
+        .pricing-card.highlight:hover {
+             transform: scale(1.05) translateY(-10px); /* Keep size on hover */
+        }
+
+        .pricing-card.highlight .plan-title,
+        .pricing-card.highlight .plan-price,
+        .pricing-card.highlight .plan-price span {
+            color: #fff;
+        }
+
+        .pricing-card.highlight .feature-list li {
+            color: #f1f1f1;
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+        
+        .pricing-card.highlight .feature-list li.disabled {
+            color: #c5dfff;
+        }
+        
+        .pricing-card.highlight .feature-list li.disabled::before {
+            color: #ffc107;
+        }
+        
+        .pricing-card.highlight .feature-list li::before {
+             color: #ffffff;
+        }
+
+        .pricing-card.highlight .cta-button {
+            background-color: #fff;
+            color: #007bff;
+        }
+
+        .pricing-card.highlight .cta-button:hover {
+            background-color: #e6f2ff;
+        }
+
+        /*-- Responsive Design for smaller screens --*/
+        @media (max-width: 992px) {
+            .pricing-container {
+                flex-direction: column; /* Stack cards vertically */
+                align-items: center;
+                gap: 2.5rem;
+            }
+            .pricing-card {
+                flex-basis: 100%; /* Ensure card takes full width */
+                max-width: 400px;
+            }
+            .pricing-card.highlight {
+                transform: scale(1); /* Reset scale on smaller screens */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="pricing-container">
+
+        <!-- Basic Plan -->
+        <div class="pricing-card">
+            <h3 class="plan-title">Basic</h3>
+            <div class="plan-price">$9<span>/month</span></div>
+            <ul class="feature-list">
+                <li>10 GB Storage</li>
+                <li>1 User Account</li>
+                <li>Email Support</li>
+                <li class="disabled">Push Notifications</li>
+                <li class="disabled">Advanced Analytics</li>
+            </ul>
+            <a href="#" class="cta-button">Choose Plan</a>
+        </div>
+
+        <!-- Pro Plan (Highlighted) -->
+        <div class="pricing-card highlight">
+            <h3 class="plan-title">Pro</h3>
+            <div class="plan-price">$29<span>/month</span></div>
+            <ul class="feature-list">
+                <li>50 GB Storage</li>
+                <li>5 User Accounts</li>
+                <li>Priority Email Support</li>
+                <li>Push Notifications</li>
+                <li class="disabled">Advanced Analytics</li>
+            </ul>
+            <a href="#" class="cta-button">Choose Plan</a>
+        </div>
+
+        <!-- Enterprise Plan -->
+        <div class="pricing-card">
+            <h3 class="plan-title">Enterprise</h3>
+            <div class="plan-price">$49<span>/month</span></div>
+            <ul class="feature-list">
+                <li>Unlimited Storage</li>
+                <li>10 User Accounts</li>
+                <li>24/7 Phone Support</li>
+                <li>Push Notifications</li>
+                <li>Advanced Analytics</li>
+            </ul>
+            <a href="#" class="cta-button">Choose Plan</a>
+        </div>
+
+    </div>
+
+</body>
+</html>
