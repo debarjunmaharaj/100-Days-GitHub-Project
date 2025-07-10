@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Card - Spaghetti Aglio e Olio</title>
+    
+    <!-- Google Fonts for a nicer look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* 
+        This <style> block contains all the CSS. 
+        In a larger project, you would move this to a separate .css file.
+        */
+
+        :root {
+            --primary-color: #8B4513; /* A warm brown, like sienna */
+            --secondary-color: #f4f4f4;
+            --text-color: #333;
+            --card-background: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Roboto', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* --- The Card Container --- */
+        .recipe-card {
+            background: var(--card-background);
+            max-width: 600px;
+            width: 100%;
+            border-radius: 15px;
+            overflow: hidden; /* This is important to make the image corners rounded */
+            box-shadow: 0 10px 30px var(--shadow-color);
+            transition: transform 0.3s ease;
+        }
+
+        .recipe-card:hover {
+            transform: scale(1.02);
+        }
+
+        /* --- Recipe Image --- */
+        .recipe-card__image img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover; /* Ensures the image covers the area without distortion */
+            display: block;
+        }
+
+        /* --- Main Content Area --- */
+        .recipe-card__content {
+            padding: 30px;
+        }
+        
+        .recipe-card__title {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin: 0 0 10px 0;
+            line-height: 1.2;
+        }
+
+        .recipe-card__description {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        /* --- Recipe Timings & Servings --- */
+        .recipe-card__details {
+            display: flex;
+            justify-content: space-around;
+            background-color: #fafafa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .recipe-card__details-item {
+            flex: 1;
+        }
+
+        .recipe-card__details-item strong {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .recipe-card__details-item span {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        /* --- Ingredients & Instructions Sections --- */
+        .recipe-card__section-title {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 5px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .recipe-card__ingredients-list,
+        .recipe-card__instructions-list {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+        }
+
+        .recipe-card__ingredients-list li,
+        .recipe-card__instructions-list li {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        /* Custom list bullets for a nicer look */
+        .recipe-card__ingredients-list li::before {
+            content: '✓';
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+
+        .recipe-card__instructions-list {
+            counter-reset: instructions-counter; /* Start a counter for steps */
+        }
+        
+        .recipe-card__instructions-list li::before {
+            counter-increment: instructions-counter; /* Increment the counter */
+            content: counter(instructions-counter); /* Display the counter number */
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: bold;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            font-size: 1rem;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 480px) {
+            .recipe-card__title {
+                font-size: 2rem;
+            }
+
+            .recipe-card__details {
+                flex-direction: column;
+                gap: 15px; /* Adds space between items when stacked */
+            }
+            
+            .recipe-card__content {
+                padding: 20px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="recipe-card">
+        
+        <div class="recipe-card__image">
+            <!-- Image Source: Pexels. A free to use stock photo. -->
+            <img src="https://images.pexels.com/photos/1437267/pexels-photo-1437267.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Spaghetti Aglio e Olio in a white bowl">
+        </div>
+
+        <div class="recipe-card__content">
+
+            <h1 class="recipe-card__title">Spaghetti Aglio e Olio</h1>
+            
+            <p class="recipe-card__description">
+                A classic and simple Italian dish of garlic, olive oil, and parsley. It's quick, delicious, and a perfect weeknight meal.
+            </p>
+
+            <div class="recipe-card__details">
+                <div class="recipe-card__details-item">
+                    <strong>Prep Time</strong>
+                    <span>10 mins</span>
+                </div>
+                <div class="recipe-card__details-item">
+                    <strong>Cook Time</strong>
+                    <span>15 mins</span>
+                </div>
+                <div class="recipe-card__details-item">
+                    <strong>Servings</strong>
+                    <span>2 people</span>
+                </div>
+            </div>
+
+            <h2 class="recipe-card__section-title">Ingredients</h2>
+            <ul class="recipe-card__ingredients-list">
+                <li>200g Spaghetti</li>
+                <li>6 cloves garlic, thinly sliced</li>
+                <li>1/2 cup extra virgin olive oil</li>
+                <li>1/4 tsp red pepper flakes (or to taste)</li>
+                <li>Salt to taste</li>
+                <li>1/4 cup fresh parsley, chopped</li>
+                <li>1/2 cup reserved pasta water</li>
+            </ul>
+
+            <h2 class="recipe-card__section-title">Instructions</h2>
+            <ol class="recipe-card__instructions-list">
+                <li>Cook spaghetti according to package directions. Just before draining, reserve about 1 cup of the starchy pasta water.</li>
+                <li>While the pasta cooks, heat olive oil in a large skillet over medium-low heat. Add the sliced garlic and cook slowly until it turns golden brown. Be careful not to burn it.</li>
+                <li>Add the red pepper flakes to the oil and cook for another 30 seconds until fragrant.</li>
+                <li>Drain the pasta and add it directly to the skillet with the garlic and oil. Toss to combine.</li>
+                <li>Add about 1/2 cup of the reserved pasta water to the skillet. Toss continuously for a minute to create a creamy sauce that coats the pasta.</li>
+                <li>Remove from heat, stir in the fresh parsley, and season with salt. Serve immediately.</li>
+            </ol>
+
+        </div>
+    </div>
+
+</body>
+</html>
