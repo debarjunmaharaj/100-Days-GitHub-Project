@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Search Bar</title>
+    <!-- We use Font Awesome for the search icon. This is a popular and easy way to add icons. -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* This is the CSS for styling the page and the search bar */
+        body {
+            /* A simple background and centering for the component */
+            background-color: #8e44ad;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            height: 60px;
+            border-radius: 60px; /* Makes the container pill-shaped */
+            padding: 5px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            
+            /* Start with a small width, just enough for the button */
+            width: 60px;
+            
+            /* Add a smooth transition for the width property */
+            transition: width 0.4s ease-in-out;
+        }
+
+        .search-input {
+            border: none;
+            outline: none;
+            background: none;
+            
+            /* The input is hidden initially */
+            width: 0;
+            padding: 0;
+            opacity: 0;
+            
+            /* Style the text that will be typed */
+            font-size: 18px;
+            color: #333;
+            
+            /* Add a smooth transition for the width and opacity */
+            transition: width 0.4s ease-in-out, opacity 0.4s ease-in-out;
+        }
+
+        .search-btn {
+            /* Style the button */
+            width: 50px;
+            height: 50px;
+            border-radius: 50%; /* Makes it a perfect circle */
+            border: none;
+            background: #8e44ad; /* Match the body background */
+            color: white;
+            
+            /* Center the icon inside the button */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+            cursor: pointer;
+            font-size: 22px;
+            
+            /* This ensures the button stays on the right */
+            margin-left: auto;
+        }
+        
+        /* --- The "Active" State --- */
+        /* This CSS applies when the JavaScript adds the 'active' class */
+        
+        .search-container.active {
+            width: 350px; /* Expand the container's width */
+        }
+        
+        .search-container.active .search-input {
+            width: 280px; /* Expand the input's width */
+            opacity: 1; /* Make it visible */
+            padding: 0 15px; /* Add some space for the text */
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- This is the HTML structure for the search bar -->
+    <div class="search-container">
+        <input type="text" class="search-input" placeholder="Type to search...">
+        <button class="search-btn">
+            <i class="fas fa-search"></i>
+        </button>
+    </div>
+
+    <script>
+        // This is the JavaScript to make it interactive
+        
+        // Get the elements from the page
+        const searchContainer = document.querySelector('.search-container');
+        const searchBtn = document.querySelector('.search-btn');
+        const searchInput = document.querySelector('.search-input');
+
+        // Add an event listener to the button for 'click' events
+        searchBtn.addEventListener('click', () => {
+            // Toggle the 'active' class on the container
+            // This is what triggers the CSS transition
+            searchContainer.classList.toggle('active');
+
+            // If the search bar is now active, focus the input field
+            // so the user can start typing right away.
+            if (searchContainer.classList.contains('active')) {
+                searchInput.focus();
+            }
+        });
+    </script>
+
+</body>
+</html>
