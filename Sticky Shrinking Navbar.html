@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sticky Shrinking Navbar</title>
+    <style>
+        /* Basic Body Styling */
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+                Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+        }
+
+        /* Header and Navigation Bar */
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 25px 5%; /* Initial larger padding */
+            position: fixed; /* Stick to the top */
+            top: 0;
+            width: 90%; /* (100% - 10% padding) */
+            z-index: 1000;
+            transition: padding 0.3s ease-in-out; /* Smooth transition for padding */
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo h1 {
+            margin: 0;
+            font-size: 2.5rem; /* Initial larger font size */
+            font-weight: 700;
+            transition: font-size 0.3s ease-in-out; /* Smooth transition for font size */
+        }
+
+        .nav-links {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.2s ease;
+        }
+
+        .nav-links li a:hover {
+            background-color: #34495e;
+        }
+        
+        /* The "Shrunk" State */
+        header.shrink {
+            padding: 10px 5%; /* Reduced padding when scrolled */
+            background-color: #34495e;
+        }
+
+        header.shrink .logo h1 {
+            font-size: 1.8rem; /* Reduced font size when scrolled */
+        }
+
+        /* Main Content Styling */
+        main {
+            padding-top: 150px; /* Leave space for the initial tall header */
+        }
+
+        section {
+            padding: 60px 5%;
+            height: 100vh; /* Make sections tall to ensure scrolling */
+            border-bottom: 2px solid #ddd;
+        }
+
+        section h2 {
+            font-size: 3rem;
+            margin-top: 0;
+        }
+
+        section p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        /* Style the sections for better visuals */
+        #home { background-color: #ecf0f1; }
+        #about { background-color: #e8f6f3; }
+        #contact { background-color: #fdebd0; }
+
+    </style>
+</head>
+<body>
+
+    <!-- The Navigation Header -->
+    <header id="main-header">
+        <nav>
+            <div class="logo">
+                <h1>LOGO</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content To Make The Page Scrollable -->
+    <main>
+        <section id="home">
+            <h2>Home Section</h2>
+            <p>Scroll down to see the navbar shrink.</p>
+            <p>This is the first section of the page. The navigation bar at the top is currently in its large, default state. As you begin to scroll down, it will stick to the top of the page and smoothly transition to a smaller size.</p>
+        </section>
+
+        <section id="about">
+            <h2>About Section</h2>
+            <p>This is the second section.</p>
+            <p>Notice how the navigation bar remains fixed at the top, but it is now smaller, taking up less screen space. This provides a better user experience on long pages by keeping navigation accessible without being intrusive.</p>
+        </section>
+
+        <section id="contact">
+            <h2>Contact Section</h2>
+            <p>This is the final section.</p>
+            <p>When you scroll back to the very top of the page, the navigation bar will return to its original, larger size. This effect is achieved with a simple JavaScript function that adds or removes a CSS class based on your scroll position.</p>
+        </section>
+    </main>
+
+    <script>
+        // Wait for the DOM to be fully loaded
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            // Get the header element
+            const header = document.getElementById('main-header');
+            
+            // Define the point where the navbar should shrink
+            // You can change this value
+            const shrinkOn = 50; 
+
+            // Function to handle the scroll event
+            function handleScroll() {
+                // window.scrollY gives the number of pixels the document is currently scrolled vertically
+                if (window.scrollY > shrinkOn) {
+                    // If scrolled past the shrinkOn point, add the 'shrink' class
+                    header.classList.add('shrink');
+                } else {
+                    // Otherwise, remove the 'shrink' class
+                    header.classList.remove('shrink');
+                }
+            }
+
+            // Add a scroll event listener to the window
+            window.addEventListener('scroll', handleScroll);
+        });
+    </script>
+
+</body>
+</html>
