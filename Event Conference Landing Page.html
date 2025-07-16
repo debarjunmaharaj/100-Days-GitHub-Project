@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Innovate Summit 2025</title>
+    
+    <style>
+        /* --- General Styling & CSS Variables --- */
+        :root {
+            --primary-color: #007BFF;
+            --primary-hover-color: #0056b3;
+            --light-color: #f4f4f4;
+            --dark-color: #333;
+            --bg-color: #1a1a1a;
+            --card-bg-color: #2c2c2c;
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --section-padding: 60px 20px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 70px; /* Offset for sticky nav */
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--light-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            overflow: hidden;
+            padding: 0 20px;
+        }
+
+        h1, h2, h3 {
+            color: var(--light-color);
+            margin-bottom: 20px;
+        }
+        
+        h1 { font-size: 3rem; }
+        h2 { font-size: 2.5rem; border-bottom: 2px solid var(--primary-color); padding-bottom: 10px; display: inline-block; }
+        h3 { font-size: 1.5rem; }
+
+        section {
+            padding: var(--section-padding);
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--primary-color);
+            color: #fff;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: var(--primary-hover-color);
+        }
+
+        /* --- Navigation Bar --- */
+        .navbar {
+            background: #222;
+            color: #fff;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--primary-color);
+            transition: background-color 0.3s;
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .navbar .nav-links {
+            list-style: none;
+            display: flex;
+        }
+
+        .navbar .nav-links li {
+            margin-left: 20px;
+        }
+
+        .navbar .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .navbar .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* --- Header / Hero Section --- */
+        .header {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://placehold.co/1920x1080/007BFF/333?text=Conference+Stage') no-repeat center center/cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #fff;
+            padding: 0 20px;
+        }
+
+        .header-content {
+            max-width: 800px;
+        }
+
+        .header-content .date-location {
+            font-size: 1.2rem;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+
+        .header-content p {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+        }
+        
+        /* --- About Section --- */
+        #about p {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+
+        /* --- Speakers Section --- */
+        .speakers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .speaker-card {
+            background: var(--card-bg-color);
+            border-radius: 10px;
+            padding: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .speaker-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+        }
+
+        .speaker-card img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .speaker-card h3 {
+            color: var(--primary-color);
+        }
+
+        .speaker-card .title {
+            font-style: italic;
+            color: #ccc;
+            margin-bottom: 10px;
+        }
+
+        /* --- Schedule Section --- */
+        .schedule-list {
+            max-width: 800px;
+            margin: 40px auto;
+            text-align: left;
+            background: var(--card-bg-color);
+            padding: 30px;
+            border-radius: 8px;
+        }
+
+        .schedule-item {
+            display: flex;
+            padding: 15px 0;
+            border-bottom: 1px solid #444;
+        }
+        
+        .schedule-item:last-child {
+            border-bottom: none;
+        }
+
+        .schedule-item .time {
+            flex: 0 0 120px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .schedule-item .details .session {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .schedule-item .details .speaker {
+            font-style: italic;
+            color: #ccc;
+        }
+        
+        /* --- Venue Section --- */
+        #venue .venue-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+            margin-top: 40px;
+            text-align: left;
+        }
+        
+        #venue .map iframe {
+            width: 100%;
+            height: 350px;
+            border: 0;
+            border-radius: 8px;
+        }
+        
+        /* --- Register Section --- */
+        #register p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* --- Footer --- */
+        .footer {
+            background: #222;
+            color: #ccc;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .footer .social-links a {
+            color: #fff;
+            margin: 0 15px;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+        
+        .footer .social-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .footer .copyright {
+            margin-top: 20px;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 2rem; }
+
+            .navbar .container {
+                flex-direction: column;
+            }
+
+            .navbar .nav-links {
+                margin-top: 10px;
+                padding: 0;
+                justify-content: center;
+            }
+
+            .navbar .nav-links li {
+                margin: 0 10px;
+            }
+            
+            html {
+                scroll-padding-top: 100px; /* Adjust for taller mobile nav */
+            }
+
+            #venue .venue-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="#" class="logo">WIS 2025</a>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#speakers">Speakers</a></li>
+                <li><a href="#schedule">Schedule</a></li>
+                <li><a href="#venue">Venue</a></li>
+                <li><a href="#register" class="btn">Register</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1>Web Innovate Summit 2025</h1>
+            <p class="date-location">October 24-26, 2025 | Metropolis Convention Center</p>
+            <p>Join the brightest minds in web development, design, and technology. Explore the future, today.</p>
+            <a href="#register" class="btn">Register Your Seat Now</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- About Section -->
+        <section id="about">
+            <div class="container">
+                <h2>About The Summit</h2>
+                <p>
+                    The Web Innovate Summit is a premier three-day event for developers, designers, and innovators. Our mission is to provide a space for learning, networking, and inspiration. We'll dive deep into the latest trends in front-end and back-end development, UI/UX design, performance optimization, and the future of the web with AI and Web3. Whether you're a seasoned professional or just starting your journey, WIS 2025 has something for you.
+                </p>
+            </div>
+        </section>
+
+        <!-- Speakers Section -->
+        <section id="speakers" style="background-color: var(--dark-color);">
+            <div class="container">
+                <h2>Our Speakers</h2>
+                <div class="speakers-grid">
+                    <div class="speaker-card">
+                        <img src="https://placehold.co/150x150/007BFF/FFFFFF?text=AA" alt="Speaker 1">
+                        <h3>Alex Alvarez</h3>
+                        <p class="title">Lead Engineer at TechCorp</p>
+                        <p>Talk: "The Future of Scalable CSS"</p>
+                    </div>
+                    <div class="speaker-card">
+                        <img src="https://placehold.co/150x150/E83E8C/FFFFFF?text=BS" alt="Speaker 2">
+                        <h3>Brenda Smith</h3>
+                        <p class="title">UX Director at CreativeMinds</p>
+                        <p>Talk: "Human-Centered Design in the AI Era"</p>
+                    </div>
+                    <div class="speaker-card">
+                        <img src="https://placehold.co/150x150/28A745/FFFFFF?text=CJ" alt="Speaker 3">
+                        <h3>Carlos Jones</h3>
+                        <p class="title">Web Performance Guru</p>
+                        <p>Talk: "Shaving Milliseconds: A Deep Dive"</p>
+                    </div>
+                     <div class="speaker-card">
+                        <img src="https://placehold.co/150x150/FFC107/FFFFFF?text=DW" alt="Speaker 4">
+                        <h3>Diana Wei</h3>
+                        <p class="title">Founder of NextGen APIs</p>
+                        <p>Talk: "Building Resilient GraphQL APIs"</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Schedule Section -->
+        <section id="schedule">
+            <div class="container">
+                <h2>Event Schedule (Day 1)</h2>
+                <div class="schedule-list">
+                    <div class="schedule-item">
+                        <span class="time">09:00 AM</span>
+                        <div class="details">
+                            <span class="session">Registration & Morning Coffee</span>
+                        </div>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="time">10:00 AM</span>
+                        <div class="details">
+                            <span class="session">Opening Keynote</span>
+                            <span class="speaker">Alex Alvarez</span>
+                        </div>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="time">11:00 AM</span>
+                        <div class="details">
+                            <span class="session">Human-Centered Design in the AI Era</span>
+                            <span class="speaker">Brenda Smith</span>
+                        </div>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="time">12:30 PM</span>
+                        <div class="details">
+                            <span class="session">Lunch Break</span>
+                        </div>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="time">02:00 PM</span>
+                        <div class="details">
+                            <span class="session">Shaving Milliseconds: A Deep Dive</span>
+                            <span class="speaker">Carlos Jones</span>
+                        </div>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="time">03:30 PM</span>
+                        <div class="details">
+                            <span class="session">Building Resilient GraphQL APIs</span>
+                            <span class="speaker">Diana Wei</span>
+                        </div>
+                    </div>
+                     <div class="schedule-item">
+                        <span class="time">05:00 PM</span>
+                        <div class="details">
+                            <span class="session">Networking Mixer</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Venue Section -->
+        <section id="venue" style="background-color: var(--dark-color);">
+            <div class="container">
+                <h2>Venue</h2>
+                <div class="venue-info">
+                    <div class="details">
+                        <h3>Metropolis Convention Center</h3>
+                        <p>123 Innovation Drive, Tech City, 10101</p>
+                        <p>Located in the heart of Tech City, the Metropolis Convention Center is a state-of-the-art facility perfect for fostering innovation and collaboration. It's easily accessible via public transport and has ample parking space.</p>
+                    </div>
+                    <div class="map">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.617036220863!2d-73.9878536845941!3d40.74844097932824!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1672533262657!5m2!1sen!2sus" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Register Section -->
+        <section id="register">
+            <div class="container">
+                <h2>Join Us!</h2>
+                <p>Tickets are limited. Secure your spot at the forefront of web innovation. Early bird pricing ends soon!</p>
+                <a href="#" class="btn">Get Your Ticket Today</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="social-links">
+                <!-- In a real scenario, these would be icon fonts like FontAwesome -->
+                <a href="#">Twitter</a>
+                <a href="#">LinkedIn</a>
+                <a href="#">Facebook</a>
+            </div>
+            <p class="copyright">© 2025 Web Innovate Summit. All Rights Reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // JavaScript for smooth scroll and scroll animations
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // --- Intersection Observer for fade-in animations ---
+            const sections = document.querySelectorAll('section');
+            
+            const options = {
+                root: null, // observes intersections relative to the viewport
+                rootMargin: '0px',
+                threshold: 0.1 // 10% of the item must be visible
+            };
+            
+            const observer = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    }
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // Stop observing once it's visible
+                });
+            }, options);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+            
+            // --- Smooth scrolling for nav links (added for robustness) ---
+            const navLinks = document.querySelectorAll('.navbar a[href^="#"]');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    let targetId = this.getAttribute('href');
+                    let targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>```
