@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Grid Magazine Layout</title>
+    <style>
+        /* --- Universal Styles & Font Imports --- */
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@300;400;500&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        a {
+            text-decoration: none;
+            color: #d13a0f;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        /* --- Main Header Style --- */
+        .main-header {
+            padding: 20px 0;
+            border-bottom: 1px solid #ccc;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .main-header h1 {
+            font-size: 4rem;
+            color: #1a1a1a;
+        }
+        .main-header p {
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        /* --- Magazine Grid Layout (Desktop First) --- */
+        .magazine-layout {
+            display: grid;
+            gap: 25px; /* The space between grid items */
+
+            /* Define the grid structure using named areas */
+            grid-template-areas:
+                "featured featured story-1 sidebar"
+                "featured featured story-2 sidebar"
+                "full-width-img full-width-img full-width-img sidebar"
+                "story-3 story-4 story-5 sidebar";
+            
+            grid-template-columns: 1fr 1fr 1fr 250px; /* 3 flexible columns and one fixed sidebar */
+        }
+
+        .grid-item {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* --- Placing Items into the Grid Areas --- */
+        .featured-article { grid-area: featured; }
+        .story-1 { grid-area: story-1; }
+        .story-2 { grid-area: story-2; }
+        .story-3 { grid-area: story-3; }
+        .story-4 { grid-area: story-4; }
+        .story-5 { grid-area: story-5; }
+        .full-width-image-box { grid-area: full-width-img; padding: 0; }
+        .sidebar { grid-area: sidebar; }
+        
+        /* --- Specific Item Styling --- */
+        .featured-article {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .featured-article img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .featured-article h2 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+        }
+        
+        .featured-article .article-meta {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 15px;
+        }
+
+        .small-story h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .small-story p {
+            font-size: 0.95rem;
+        }
+
+        .full-width-image-box {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .full-width-image-box img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .full-width-image-box .image-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: #fff;
+            padding: 40px 20px 20px;
+            font-size: 1.8rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .sidebar {
+            background-color: #1a1a1a;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .sidebar h4 {
+            font-size: 1.2rem;
+            border-bottom: 2px solid #d13a0f;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #444;
+        }
+        
+        .sidebar ul li:last-child {
+            border-bottom: none;
+        }
+
+        .sidebar a {
+            color: #f0f0f0;
+            font-weight: 500;
+        }
+
+        .sidebar a:hover {
+            color: #d13a0f;
+        }
+
+        /* --- Footer --- */
+        .main-footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            background-color: #333;
+            color: #fff;
+        }
+
+        /* --- Responsive Design: Tablet View --- */
+        @media (max-width: 1024px) {
+            .magazine-layout {
+                grid-template-areas:
+                    "featured featured"
+                    "story-1 story-2"
+                    "full-width-img full-width-img"
+                    "story-3 story-4"
+                    "story-5 sidebar"; /* Sidebar will stretch */
+                
+                grid-template-columns: 1fr 1fr; /* Switch to 2 columns */
+            }
+
+            .featured-article {
+                grid-template-columns: 1fr; /* Stack image and text */
+            }
+            .featured-article img {
+                height: 300px;
+            }
+            .featured-article h2 {
+                font-size: 2.2rem;
+            }
+        }
+
+        /* --- Responsive Design: Mobile View --- */
+        @media (max-width: 768px) {
+            .main-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .magazine-layout {
+                display: block; /* Disable grid and stack all items */
+            }
+
+            .grid-item {
+                margin-bottom: 20px; /* Add margin to separate stacked items */
+            }
+            
+            .sidebar {
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header class="main-header">
+            <h1>The Grid Times</h1>
+            <p>A Modern Showcase of CSS Grid in Action</p>
+        </header>
+
+        <main class="magazine-layout">
+            <!-- Main Featured Story -->
+            <article class="grid-item featured-article">
+                <img src="https://images.unsplash.com/photo-1579532537598-459ecdaf39cc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzOTAzNDl8MHwxfGFsbHx8fHx8fHx8fDE3MjIzNzU4MDl8&ixlib=rb-4.0.3&q=80&w=1080" alt="Modern city architecture">
+                <div class="article-content">
+                    <span class="article-meta">By Alex Doe | Technology</span>
+                    <h2>The Future of Urban Living: How Smart Cities Are Changing Our World</h2>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique, dicta! Repellendus, suscipit tempora. Laboriosam, aliquid! Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fuga, quod!</p>
+                    <a href="#">Read More »</a>
+                </div>
+            </article>
+
+            <!-- Smaller Stories -->
+            <article class="grid-item small-story story-1">
+                <h3>The Culinary Renaissance</h3>
+                <p>Discover how ancient grains are making a powerful comeback in modern kitchens. It's a tale of flavor, health, and history.</p>
+                <a href="#">Continue Reading</a>
+            </article>
+
+            <article class="grid-item small-story story-2">
+                <h3>Oceanic Mysteries Unveiled</h3>
+                <p>New submersible technology allows scientists to explore the deepest trenches of our oceans, revealing bizarre new lifeforms.</p>
+                <a href="#">Explore the Depths</a>
+            </article>
+
+            <!-- A full-width image feature -->
+            <figure class="grid-item full-width-image-box">
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzOTAzNDl8MHwxfGFsbHx8fHx8fHx8fDE3MjIzNzU4NjJ8&ixlib=rb-4.0.3&q=80&w=1080" alt="Misty mountain landscape">
+                <figcaption class="image-caption">Journey Through the Mist</figcaption>
+            </figure>
+            
+            <article class="grid-item small-story story-3">
+                <h3>Art in the Digital Age</h3>
+                <p>From NFTs to AI-generated masterpieces, how technology is redefining the very concept of art and ownership.</p>
+                <a href="#">View Gallery</a>
+            </article>
+
+            <article class="grid-item small-story story-4">
+                <h3>The Physics of Time Travel</h3>
+                <p>While still in the realm of theory, some physicists believe we are closer than ever to understanding how it might be possible.</p>
+                <a href="#">Learn More</a>
+            </article>
+
+            <article class="grid-item small-story story-5">
+                <h3>Sustainable Fashion</h3>
+                <p>A look into the brands that are prioritizing the planet with innovative, eco-friendly materials and ethical production lines.</p>
+                <a href="#">Shop Green</a>
+            </article>
+
+            <!-- Sidebar -->
+            <aside class="grid-item sidebar">
+                <h4>Trending Topics</h4>
+                <ul>
+                    <li><a href="#">The Rise of AI Assistants</a></li>
+                    <li><a href="#">Global Economic Outlook</a></li>
+                    <li><a href="#">Health & Wellness in 2025</a></li>
+                    <li><a href="#">Space Exploration Milestones</a></li>
+                    <li><a href="#">Indie Game Development Hits</a></li>
+                </ul>
+            </aside>
+        </main>
+
+        <footer class="main-footer">
+            <p>© 2025 The Grid Times. All Rights Reserved.</p>
+        </footer>
+    </div>
+
+</body>
+</html>
