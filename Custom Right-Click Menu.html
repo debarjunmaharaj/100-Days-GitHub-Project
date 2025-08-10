@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Right-Click Menu</title>
+    <style>
+        /* Basic page styling */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            height: 100vh;
+            background-color: #f0f2f5;
+        }
+
+        /* The main container where the custom menu is active */
+        #app {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            background-color: #e2e8f0;
+            color: #4a5568;
+            font-size: 1.5rem;
+            text-align: center;
+            user-select: none; /* Prevents text selection on double click */
+        }
+
+        /* The custom context menu */
+        #custom-menu {
+            position: absolute; /* Crucial for placing it at cursor position */
+            display: none;      /* Hidden by default */
+            background-color: white;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 8px 0;
+            min-width: 180px;
+            z-index: 1000;
+        }
+        
+        /* The class that makes the menu visible */
+        #custom-menu.visible {
+            display: block;
+        }
+
+        /* Menu items list */
+        .menu-items {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        /* Individual menu items */
+        .menu-items li {
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .menu-items li:hover {
+            background-color: #f1f5f9;
+        }
+        
+        /* A separator line in the menu */
+        .menu-separator {
+            height: 1px;
+            background-color: #e2e8f0;
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- This is the area where the right-click will be captured -->
+    <div id="app">
+        Right-click anywhere in this area!
+    </div>
+
+    <!-- This is the hidden custom menu -->
+    <div id="custom-menu">
+        <ul class="menu-items">
+            <li data-action="reload">Reload Page</li>
+            <li data-action="back">Go Back</li>
+            <li data-action="save">Save As... (mock)</li>
+            <div class="menu-separator"></div>
+            <li data-action="inspect">Inspect (mock)</li>
+        </ul>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const appArea = document.getElementById("app");
+            const menu = document.getElementById("custom-menu");
+
+            // --- Show the custom menu on right-click ---
+            appArea.addEventListener("contextmenu", (event) => {
+                // Prevent the default browser context menu from showing
+                event.preventDefault();
+
+                // Get the coordinates of the right-click
+                const { clientX: mouseX, clientY: mouseY } = event;
+                
+                // Position the menu at the cursor's location
+                menu.style.top = `${mouseY}px`;
+                menu.style.left = `${mouseX}px`;
+
+                // Make the menu visible
+                menu.classList.add("visible");
+            });
+
+            // --- Hide the menu when clicking anywhere else ---
+            window.addEventListener("click", (e) => {
+                // If the menu is visible, hide it
+                if (menu.classList.contains("visible")) {
+                    menu.classList.remove("visible");
+                }
+            });
+
+            // --- Add functionality to menu items ---
+            menu.addEventListener("click", (e) => {
+                // Use event delegation to find out which item was clicked
+                const action = e.target.getAttribute("data-action");
+                if (action) {
+                    handleMenuAction(action);
+                }
+            });
+            
+            function handleMenuAction(action) {
+                switch (action) {
+                    case "reload":
+                        // Actually reloads the page
+                        window.location.reload();
+                        break;
+                    case "back":
+                        // Actually goes to the previous page in history
+                        window.history.back();
+                        break;
+                    case "save":
+                        // Most browsers block file saving for security, so we just log it.
+                        console.log("Action: Save As...");
+                        alert("Action: Save As... (See console for log)");
+                        break;
+                    case "inspect":
+                        console.log("Action: Inspect");
+                        alert("Action: Inspect (See console for log)");
+                        break;
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
