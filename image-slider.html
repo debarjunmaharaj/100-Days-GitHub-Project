@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rev Slider</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0f0f0f;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    .rev-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    /* ── Main stage ── */
+    .rev-stage {
+      position: relative;
+      width: 100%;
+      height: 480px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #111;
+      cursor: grab;
+      user-select: none;
+    }
+
+    .rev-stage:active { cursor: grabbing; }
+
+    /* ── Individual slides ── */
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: scale(1.05);
+      transition: opacity 0.7s cubic-bezier(.4,0,.2,1),
+                  transform 0.9s cubic-bezier(.4,0,.2,1);
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: scale(1);
+      z-index: 2;
+    }
+
+    .slide.prev-out {
+      opacity: 0;
+      transform: scale(0.96) translateX(-3%);
+      z-index: 1;
+      transition: opacity 0.55s ease, transform 0.7s ease;
+    }
+
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border-radius: 8px;
+    }
+
+    /* ── Dark gradient overlay ── */
+    .slide-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.75) 0%,
+        rgba(0,0,0,0.1)  50%,
+        transparent      100%
+      );
+      border-radius: 8px;
+    }
+
+    /* ── Caption block ── */
+    .slide-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 2.2rem 2.4rem;
+      z-index: 3;
+    }
+
+    .slide-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: #fff;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.28);
+      border-radius: 4px;
+      padding: 3px 11px;
+      margin-bottom: 10px;
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.5s 0.25s ease, transform 0.5s 0.25s ease;
+    }
+
+    .slide-title {
+      font-size: 28px;
+      font-weight: 600;
+      color: #fff;
+      line-height: 1.25;
+      margin-bottom: 8px;
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.5s 0.4s ease, transform 0.5s 0.4s ease;
+    }
+
+    .slide-sub {
+      font-size: 15px;
+      color: rgba(255,255,255,0.68);
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.5s 0.54s ease, transform 0.5s 0.54s ease;
+    }
+
+    /* animate captions in when slide is active */
+    .slide.active .slide-tag,
+    .slide.active .slide-title,
+    .slide.active .slide-sub {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Arrows ── */
+    .nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.14);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #fff;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      line-height: 1;
+    }
+
+    .nav-btn:hover {
+      background: rgba(255,255,255,0.28);
+      transform: translateY(-50%) scale(1.08);
+    }
+
+    .nav-btn:active { transform: translateY(-50%) scale(0.94); }
+    .nav-prev { left: 16px; }
+    .nav-next { right: 16px; }
+
+    /* ── Progress bar ── */
+    .progress-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      background: rgba(255,255,255,0.88);
+      width: 0%;
+      z-index: 5;
+      border-radius: 0 0 0 8px;
+    }
+
+    /* ── Slide counter ── */
+    .slide-counter {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      z-index: 10;
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.75);
+      background: rgba(0,0,0,0.32);
+      backdrop-filter: blur(4px);
+      border-radius: 20px;
+      padding: 4px 11px;
+    }
+
+    /* ── Thumbnail strip ── */
+    .thumb-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.2) transparent;
+    }
+
+    .thumb {
+      flex-shrink: 0;
+      width: 76px;
+      height: 50px;
+      border-radius: 6px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 2px solid transparent;
+      opacity: 0.55;
+      transition: all 0.25s ease;
+    }
+
+    .thumb:hover { opacity: 0.82; transform: scale(1.05); }
+    .thumb.on    { border-color: #fff; opacity: 1; }
+
+    .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ── Dot bullets ── */
+    .bullets {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .bullet {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: background 0.25s, transform 0.25s;
+    }
+
+    .bullet.on {
+      background: #fff;
+      transform: scale(1.35);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .rev-stage  { height: 300px; }
+      .slide-title { font-size: 20px; }
+      .slide-caption { padding: 1.4rem 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="rev-wrap">
+    <div class="rev-stage" id="stage">
+      <div class="slide-counter">
+        <span id="cur">1</span> / <span id="tot"></span>
+      </div>
+      <div class="progress-bar" id="pbar"></div>
+      <button class="nav-btn nav-prev" id="prev">&#8592;</button>
+      <button class="nav-btn nav-next" id="next">&#8594;</button>
+    </div>
+
+    <div class="thumb-row" id="thumbs"></div>
+    <div class="bullets"   id="bullets"></div>
+  </div>
+
+  <script>
+    /* ─────────────────────────────────
+       Slide data — swap images/text here
+    ───────────────────────────────── */
+    const slides = [
+      {
+        img  : "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80",
+        tag  : "Nature",
+        title: "Lost in the mountains",
+        sub  : "Somewhere between the clouds and silence"
+      },
+      {
+        img  : "https://images.unsplash.com/photo-1511884642898-4c92249e20b6?w=1200&q=80",
+        tag  : "Adventure",
+        title: "Into the wild forest",
+        sub  : "Where every path leads to wonder"
+      },
+      {
+        img  : "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1200&q=80",
+        tag  : "Ocean",
+        title: "Endless blue horizon",
+        sub  : "Let the waves carry your thoughts"
+      },
+      {
+        img  : "https://images.unsplash.com/photo-1444084316824-dc26d6657664?w=1200&q=80",
+        tag  : "Night",
+        title: "City lights after dark",
+        sub  : "The world never really sleeps"
+      },
+      {
+        img  : "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=1200&q=80",
+        tag  : "Desert",
+        title: "Sand dunes at golden hour",
+        sub  : "Beauty lives in the quiet emptiness"
+      }
+    ];
+
+    /* ─────────────────────────────────
+       State
+    ───────────────────────────────── */
+    let cur     = 0;
+    let timer   = null;
+    let paused  = false;
+    let dragX   = 0;
+    let dragging= false;
+    const DELAY = 5000; // ms per slide
+
+    /* ─────────────────────────────────
+       Build DOM
+    ───────────────────────────────── */
+    const stage     = document.getElementById('stage');
+    const pbar      = document.getElementById('pbar');
+    const thumbRow  = document.getElementById('thumbs');
+    const bulletsEl = document.getElementById('bullets');
+    const curEl     = document.getElementById('cur');
+    const totEl     = document.getElementById('tot');
+
+    totEl.textContent = slides.length;
+
+    slides.forEach((s, i) => {
+      /* slide */
+      const el = document.createElement('div');
+      el.className = 'slide' + (i === 0 ? ' active' : '');
+      el.innerHTML = `
+        <img src="${s.img}" alt="${s.title}" loading="${i < 2 ? 'eager' : 'lazy'}">
+        <div class="slide-overlay"></div>
+        <div class="slide-caption">
+          <span class="slide-tag">${s.tag}</span>
+          <div class="slide-title">${s.title}</div>
+          <div class="slide-sub">${s.sub}</div>
+        </div>`;
+      stage.appendChild(el);
+
+      /* thumbnail */
+      const th = document.createElement('div');
+      th.className = 'thumb' + (i === 0 ? ' on' : '');
+      th.innerHTML = `<img src="${s.img}" alt="" loading="lazy">`;
+      th.addEventListener('click', () => go(i));
+      thumbRow.appendChild(th);
+
+      /* bullet dot */
+      const b = document.createElement('button');
+      b.className = 'bullet' + (i === 0 ? ' on' : '');
+      b.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+      b.addEventListener('click', () => go(i));
+      bulletsEl.appendChild(b);
+    });
+
+    const allSlides  = [...document.querySelectorAll('.slide')];
+    const allThumbs  = [...thumbRow.children];
+    const allBullets = [...bulletsEl.children];
+
+    /* ─────────────────────────────────
+       Core go() function
+    ───────────────────────────────── */
+    function go(n) {
+      if (n === cur) return;
+
+      // fade out current
+      allSlides[cur].classList.add('prev-out');
+      setTimeout(() => allSlides[cur].classList.remove('prev-out'), 750);
+      allSlides[cur].classList.remove('active');
+      allThumbs[cur].classList.remove('on');
+      allBullets[cur].classList.remove('on');
+
+      cur = (n + slides.length) % slides.length;
+
+      allSlides[cur].classList.add('active');
+      allThumbs[cur].classList.add('on');
+      allBullets[cur].classList.add('on');
+      curEl.textContent = cur + 1;
+
+      restartTimer();
+    }
+
+    /* ─────────────────────────────────
+       Auto-play timer + progress bar
+    ───────────────────────────────── */
+    function restartTimer() {
+      clearInterval(timer);
+
+      // reset bar
+      pbar.style.transition = 'none';
+      pbar.style.width = '0%';
+
+      if (paused) return;
+
+      // let the reset flush, then animate
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          pbar.style.transition = `width ${DELAY}ms linear`;
+          pbar.style.width = '100%';
+        });
+      });
+
+      timer = setInterval(() => go(cur + 1), DELAY);
+    }
+
+    /* ─────────────────────────────────
+       Arrow buttons
+    ───────────────────────────────── */
+    document.getElementById('prev').addEventListener('click', () => go(cur - 1));
+    document.getElementById('next').addEventListener('click', () => go(cur + 1));
+
+    /* ─────────────────────────────────
+       Pause on hover
+    ───────────────────────────────── */
+    stage.addEventListener('mouseenter', () => {
+      paused = true;
+      clearInterval(timer);
+      pbar.style.transition = 'none';
+    });
+
+    stage.addEventListener('mouseleave', () => {
+      paused = false;
+      restartTimer();
+    });
+
+    /* ─────────────────────────────────
+       Touch / drag swipe
+    ───────────────────────────────── */
+    let touchStartX = 0;
+
+    stage.addEventListener('touchstart', e => {
+      touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+
+    stage.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(dx) > 40) dx < 0 ? go(cur + 1) : go(cur - 1);
+    });
+
+    stage.addEventListener('mousedown', e => {
+      dragging = true;
+      dragX    = e.clientX;
+    });
+
+    window.addEventListener('mouseup', e => {
+      if (!dragging) return;
+      const dx = e.clientX - dragX;
+      if (Math.abs(dx) > 40) dx < 0 ? go(cur + 1) : go(cur - 1);
+      dragging = false;
+    });
+
+    /* ─────────────────────────────────
+       Keyboard support
+    ───────────────────────────────── */
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft')  go(cur - 1);
+      if (e.key === 'ArrowRight') go(cur + 1);
+    });
+
+    /* ─────────────────────────────────
+       Kick it off
+    ───────────────────────────────── */
+    restartTimer();
+  </script>
+
+</body>
+</html>
