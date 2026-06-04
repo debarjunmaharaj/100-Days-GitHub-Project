@@ -2,10 +2,9 @@ name: Daily Auto Commit
 
 on:
   schedule:
-    - cron: '0 18 * * *'     # Daily at 12:00 AM Bangladesh Time
+    - cron: '0 2,10,18 * * *'     # 3 times daily: 8:00 AM, 4:00 PM, 12:00 AM (Bangladesh Time)
   workflow_dispatch:
 
-# ←←←←← ADD THIS PERMISSIONS BLOCK
 permissions:
   contents: write
 
@@ -17,11 +16,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}   # Important for push
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Make daily change
         run: |
-          echo "Daily commit - $(date '+%Y-%m-%d %H:%M:%S')" >> daily-activity-log.txt
+          echo "Daily commit - $(date '+%Y-%m-%d %H:%M:%S') [BDT]" >> daily-activity-log.txt
 
       - name: Commit and Push
         run: |
@@ -33,6 +32,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "chore: daily auto commit $(date '+%Y-%m-%d')"
+            git commit -m "chore: daily auto commit $(date '+%Y-%m-%d %H:%M')"
             git push
           fi
