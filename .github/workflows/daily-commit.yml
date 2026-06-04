@@ -2,8 +2,12 @@ name: Daily Auto Commit
 
 on:
   schedule:
-    - cron: '0 18 * * *'     # Runs daily at 12:00 AM Bangladesh Time
-  workflow_dispatch:         # Allows you to run it manually
+    - cron: '0 18 * * *'     # Daily at 12:00 AM Bangladesh Time
+  workflow_dispatch:
+
+# ←←←←← ADD THIS PERMISSIONS BLOCK
+permissions:
+  contents: write
 
 jobs:
   daily-commit:
@@ -12,6 +16,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}   # Important for push
 
       - name: Make daily change
         run: |
